@@ -21,7 +21,7 @@
   
 ## Execução
 
-Após realizar a comfiguração do ambiente gerar a execução a partir do arquivo *** "funcionalidades.feature" ***.
+Após realizar a comfiguração do ambiente gerar a execução a partir do arquivo ***"funcionalidades.feature"***.
 
 ## Evidências de Teste
 
