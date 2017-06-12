@@ -1,0 +1,19 @@
+2017-06-12 06:43:02 INFO - **** Dado que acesso a aplicacao do navegador chrome ****
+2017-06-12 06:43:52 INFO - **** Quando realizo pesquisa pelo produto Batman ****
+2017-06-12 06:43:55 INFO - ---- Valida carrinho vázio ----
+Descrição Produto: 
+Carrinho vazio
+2017-06-12 06:43:56 INFO - Produtos no carrinho: 0
+2017-06-12 06:43:56 PASSED - Carrinho está vázio
+2017-06-12 06:44:07 INFO - **** E seleciono um item retornado pela pesquisa ****
+2017-06-12 06:44:13 PASSED - Produto selecionado
+2017-06-12 06:44:13 INFO - **** E adiciono produto ao carrinho ****
+2017-06-12 06:44:24 PASSED - Click em <Adicionar ao carrinho> realizado
+2017-06-12 06:44:24 INFO - **** Então valido se o produto foi adicinado ****
+2017-06-12 06:44:26 INFO - ---- Valida Produto Adicionado ----
+Descrição Produto: 
+Batman: Arkham City (X360)
+1 x $59.99
+2017-06-12 06:44:26 INFO - Produtos no carrinho: 1
+2017-06-12 06:44:26 INFO - Quantidade de produtos no carrinho foi alterada
+2017-06-12 06:44:28 PASSED - Produto adicionado ao carrinho com sucesso

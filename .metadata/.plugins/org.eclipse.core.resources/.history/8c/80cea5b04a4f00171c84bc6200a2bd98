@@ -1,0 +1,171 @@
+package auxiliar;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+
+//import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import log.EscreveLog;
+
+public class Auxiliar extends EscreveLog{
+	
+	WebDriver driver;
+	//WebDriverWait wait = new WebDriverWait(driver, 10);
+	
+	//Seleciona Navegador
+	public WebDriver selecionaNavegador(String navegador){
+		
+		Path workingDirectory=Paths.get(".").toAbsolutePath();
+		String separador =  File.separator;
+		String path = workingDirectory.toString().replace(".","")  + "src" + separador + "drivers" + separador;
+		
+		try{
+			
+			switch (navegador){
+			
+				case "chrome":
+					
+			    	System.setProperty("webdriver.chrome.driver", path + "chromedriver.exe");
+			    	driver = new ChromeDriver();
+			    	break;
+			    	
+				case "firefox":
+					
+			    	System.setProperty("webdriver.gecko.driver", path + "geckodriver.exe");
+			        driver = new FirefoxDriver();
+					break;
+					
+				case "edge":
+					
+					break;
+					
+			}
+	    	
+			driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+			
+			return driver;
+
+		} catch(Exception e) {
+			logEvidencia("ERROR","Erro no método <itensCarrinho>" + System.getProperty("line.separator") + "Mensagem de erro: " + e.getMessage());
+			return driver;
+		}
+	}
+	
+	
+	//Verifica itens do carrinho. Exemplo: <vázio>
+	public int itensCarrinho() throws InterruptedException{
+		
+		try{
+			
+			//Verifica itens do carrinho
+			driver.findElement(By.className("ty-block")).click();
+			
+			Thread.sleep(1000);
+			
+			//Retorna quantidade de itens no carrinho
+			if(driver.findElement(By.className("ty-cart-items")).getText().trim().equals("Carrinho vazio")){
+				return 0;
+			}
+			else
+			{
+				return driver.findElement(By.className("ty-cart-items__list")).findElements(By.tagName("li")).size();	
+			}
+			
+		} catch(Exception e) {
+			logEvidencia("ERROR","Erro no método <itensCarrinho>" + System.getProperty("line.separator") + "Mensagem de erro: " + e.getMessage());
+			return 0;
+		}
+
+	}
+	
+	
+	//Seleciona Produto
+	public boolean selecionaProduto(){
+		
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		
+		try{
+			//Criar classe e método
+			List <WebElement> itensLocalizados = driver.findElement(By.className("grid-list")).findElements(By.className("ty-column3"));
+			
+			//Verifica se existem itens na lista
+			if (itensLocalizados.size() > 0){
+				//Click no primeiro item
+				itensLocalizados.get(0).click();
+				
+				wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[text()='Adicionar ao carrinho']")));
+				
+				return true;
+			}
+			else //Caso não existam itens na lista
+			{
+				return false;
+			}
+			
+		} catch(Exception e) {
+			logEvidencia("ERROR","Erro no método <selecionaProduto>" + System.getProperty("line.separator") + "Mensagem de erro: " + e.getMessage());
+			return false;
+		}
+
+	}
+	
+	
+	//Fecha popup add produto ao carrinho
+	public boolean addProduto() throws InterruptedException{
+		//WebDriverWait wait = new WebDriverWait(driver, 10);
+		
+		driver.findElement(By.xpath("//button[text()='Adicionar ao carrinho']")).click();
+		//driver.findElement(By.id("button_cart_94")).click();
+		Thread.sleep(10000);
+		return true;
+		/*try{
+			
+			
+			
+			Thread.sleep(8000);
+			//wait.until(ExpectedConditions.elementToBeClickable(By.className("ty-block")));
+			//wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("cm-notification-close.*")));
+			
+			//driver.findElement(By.className("cm-notification-close.*")).click();
+			
+			return true;
+			
+		} catch(Exception e) {
+			logEvidencia("Erro no método <addProduto>" + System.getProperty("line.separator") + "Mensagem de erro: " + e.getMessage());
+			return false;
+		}*/
+
+	}
+	
+	//Gera printscreen
+	public void print(){
+		
+		try {
+
+			File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+			FileUtils.copyFile(scrFile, new File(pathArquivoLog + nomeArquivoLog.replace("txt", "png")));
+			//geraXML();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+}

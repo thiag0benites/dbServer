@@ -1,0 +1,146 @@
+package passos;
+
+import org.junit.Assert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+
+import auxiliar.Auxiliar;
+import cucumber.api.java.en.And;
+import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
+
+
+public class Passos extends Auxiliar{
+	//Auxiliar auxiliar = new Auxiliar();
+	WebDriver driver;
+	int qtdItensCarrinho;
+	
+	
+	@Given("^que acesso a aplicacao do navegador \"([^\"]*)\"$")
+	public void AcessaSistema(String navegador) {
+		
+		geraNomeArquivoLog();
+		
+    	logEvidencia("INFO", "**** Dado que acesso a aplicacao do navegador " + navegador + " ****" );
+    	
+    	driver = selecionaNavegador(navegador);
+        
+		driver.manage().window().maximize();
+		driver.navigate().to("http://demo.cs-cart.com/");
+		
+	}
+
+	
+	@When("^realizo pesquisa pelo produto \"([^\"]*)\"$")
+	public void realizo_pesquisa_pelo_produto(String produto) throws Exception {
+		
+		logEvidencia("INFO", "**** Quando realizo pesquisa pelo produto " + produto + " ****");
+		
+		//Verifica se o carrinho esta vázio
+		qtdItensCarrinho = itensCarrinho();
+		
+		logEvidencia("INFO", "---- Valida carrinho vázio ----" + System.getProperty("line.separator") + "Descrição Produto: " + System.getProperty("line.separator") + driver.findElement(By.className("ty-cart-items")).getText().trim());
+		logEvidencia("INFO", "Produtos no carrinho: " + qtdItensCarrinho);
+		
+		
+		if (qtdItensCarrinho == 0){
+			logEvidencia("PASSED", "Carrinho está vázio");
+		}
+		else
+		{
+			logEvidencia("FAILED", "Carrinho não está vázio");
+			print("FAILED");
+		}
+		
+		Assert.assertTrue(qtdItensCarrinho == 0);
+		
+		//Pesquisa produto
+		driver.findElement(By.id("search_input")).sendKeys(produto);
+		driver.findElement(By.className("ty-search-magnifier")).click();
+
+	}
+	
+
+	@And("^seleciono um item retornado pela pesquisa$")
+	public void seleciono_um_item_retornado_pela_pesquisa() {
+		
+		logEvidencia("INFO", "**** E seleciono um item retornado pela pesquisa ****");
+		
+		//Seleciona e valida
+		boolean seleciona = selecionaProduto();
+		
+		if (seleciona){
+			logEvidencia("PASSED", "Produto selecionado");
+		}
+		else
+		{
+			logEvidencia("FAILED", "Produto não selecionado");
+			print("FAILED");
+		}
+		
+		Assert.assertTrue(seleciona);
+		
+	}
+	
+
+	@And("^adiciono produto ao carrinho$")
+	public void adiciono_produto_ao_carrinho() throws Exception {
+		
+		logEvidencia("INFO", "**** E adiciono produto ao carrinho ****");
+		
+		//Click no botão Adicionar ao carrinho
+		boolean add = addProduto();
+		
+		/*if (add){
+			logEvidencia("PASSED", "Click em <Adicionar ao carrinho> realizado");
+		}
+		else
+		{
+			logEvidencia("FAILED", "Click em <Adicionar ao carrinho> não foi realizado");
+		}
+		
+		Assert.assertTrue(add);*/
+		
+	}
+	
+
+	@Then("^valido se o produto foi adicinado$")
+	public void valido_se_o_produto_foi_adicinado() throws Exception {
+		
+		logEvidencia("INFO", "**** Então valido se o produto foi adicinado ****");
+		
+		//Verifica se o carrinho contém um item
+		qtdItensCarrinho = itensCarrinho();
+		
+		logEvidencia("INFO", "---- Valida Produto Adicionado ----" + System.getProperty("line.separator") + "Descrição Produto: "  + System.getProperty("line.separator") + driver.findElement(By.className("ty-cart-items")).getText().trim());
+		logEvidencia("INFO", "Produtos no carrinho: " + qtdItensCarrinho);
+		
+		if (qtdItensCarrinho > 0){
+			logEvidencia("INFO", "Quantidade de produtos no carrinho foi alterada");
+			
+			//Acessa itens do carrinho
+			driver.findElement(By.className("ty-block")).click();
+			
+			Thread.sleep(2000);
+			
+			driver.findElement(By.className("ty-cart-items__list")).findElements(By.tagName("li")).get(0).click();
+			
+			Thread.sleep(5000);
+			
+			if (driver.findElement(By.id("cart_items")).findElements(By.tagName("tr")).size() == 1){
+				logEvidencia("PASSED", "Produto adicionado ao carrinho com sucesso");
+				print("PASSED");
+			}
+			
+		}
+		else
+		{
+			logEvidencia("FAILED","Quantidade de produtos no carrinho não foi alterada");
+			print("FAILED");
+		}
+		
+		Assert.assertTrue(qtdItensCarrinho > 0);
+		
+	}
+}
