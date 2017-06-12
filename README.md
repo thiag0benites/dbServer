@@ -27,6 +27,6 @@ Após realizar a comfiguração do ambiente gerar a execução a partir do arqui
 
 A automação gera dois arquivos de evidência seguindo os seguntes modelos:
 
-  - Arquivo de log *** ".txt" ***, o nome do arquivo sempre vai exibir o padrão de *** "Dia", "Mês", "Ano", "Hora", "Minutos" e "Segundos" (ddMMaaaahhmmss.txt) ***.
+  - Arquivo de log **".txt"**, o nome do arquivo sempre vai exibir o padrão de **"Dia", "Mês", "Ano", "Hora", "Minutos" e "Segundos" (ddMMaaaahhmmss.txt)**.
   
-  - Arquivo de imagens *** (PrintScreen) *** o nome do arquivo sempre vai exibir o padrão de *** STATUS EXECUCAO_"Dia", "Mês", "Ano", "Hora", "Minutos" e "Segundos". Ex: (PASSED_ddMMaaaahhmmss.txt) ***.
+  - Arquivo de imagens **".png"** o nome do arquivo sempre vai exibir o padrão de **STATUS EXECUCAO_"Dia", "Mês", "Ano", "Hora", "Minutos" e "Segundos". Ex: (PASSED_ddMMaaaahhmmss.txt)**.
