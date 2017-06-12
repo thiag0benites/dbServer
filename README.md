@@ -21,11 +21,11 @@
   
 ## Execução
 
-Após realizar a comfiguração do ambiente gerar a execução a partir do arquivo **"funcionalidades.feature"**.
+Após realizar a configuração do ambiente gerar a execução a partir do arquivo **"funcionalidades.feature"**.
 
 ## Evidências de Teste
 
-A automação gera dois arquivos de evidência seguindo os seguntes modelos:
+A automação gera dois arquivos de evidência seguindo os modelos abaixo:
 
   - Arquivo de log **".txt"**, o nome do arquivo sempre vai exibir o padrão de **"Dia", "Mês", "Ano", "Hora", "Minutos" e "Segundos" (ddMMaaaahhmmss.txt)**.
   
